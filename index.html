@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>こどもまち会議 World Model Edition</title>
+<meta name="description" content="社会のつながりそのものを遊ぶ、World Model型の社会シミュレーション。">
+<meta name="theme-color" content="#2b2620">
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="まち会議WM">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 上部バー：年・財政 -->
+<header id="top-bar">
+  <span id="year-label">1年目</span>
+  <span class="app-title">🌍 こどもまち会議</span>
+  <span id="finance-label">💰 財政 --</span>
+</header>
+
+<!-- 中央：ワールドモデル（つながりの地図） -->
+<main id="graph-area">
+  <svg id="graph" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="zoom-controls">
+    <button onclick="zoomIn()" aria-label="拡大">＋</button>
+    <button onclick="zoomOut()" aria-label="縮小">－</button>
+    <button onclick="zoomFit()" aria-label="全体表示">⊡</button>
+  </div>
+</main>
+
+<!-- 下部：情報・操作パネル -->
+<section id="panel">
+  <div id="panel-handle"></div>
+  <h2 id="panel-title">読み込み中…</h2>
+  <div id="panel-body"><p>データを読み込んでいます…</p></div>
+</section>
+
+<script src="js/worldmodel.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch((err) => {
+        console.error("Service Worker の登録に失敗しました", err);
+      });
+    });
+  }
+</script>
+</body>
+</html>

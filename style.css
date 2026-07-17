@@ -1,0 +1,238 @@
+/* ============================================================
+   style.css — こどもまち会議 World Model Edition
+   デザイン方針：
+   ・地図部分は「夜の知識地図」風（濃い背景に光るノード）
+   ・パネル部分はこれまでの紙の温かみを引き継ぐ
+   ・スマホ縦画面最優先：上バー／中央地図／下パネルの3段構成
+   ============================================================ */
+
+:root {
+  --map-bg: #2b2620;
+  --paper: #f6eeda;
+  --card: #fffbf0;
+  --ink: #4a3728;
+  --ink-soft: #8a7a64;
+  --green: #6b9b5d;
+  --green-deep: #4f7a44;
+  --amber: #e8a33d;
+  --rust: #b85c3e;
+  --line: #d9c9a8;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--map-bg);
+  color: var(--ink);
+  font-family: "Hiragino Maru Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "Hiragino Sans",
+    "Noto Sans JP", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ---------- 上部バー ---------- */
+#top-bar {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  padding-top: calc(10px + env(safe-area-inset-top, 0));
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--paper);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.app-title { opacity: 0.85; font-size: 0.9rem; }
+#finance-label.danger { color: #ff9d7a; }
+
+/* ---------- 地図エリア ---------- */
+#graph-area {
+  flex: 1 1 auto;
+  position: relative;
+  min-height: 0;
+}
+#graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+/* ノードとエッジ（SVG内） */
+.edge line { stroke: #7a6f5d; opacity: 0.55; }
+.edge-arrow { fill: #7a6f5d; opacity: 0.55; }
+.edge-hl line { stroke: var(--amber); opacity: 0.95; }
+.edge-hl .edge-arrow { fill: var(--amber); opacity: 0.95; }
+.edge-dim { opacity: 0.12; }
+
+.node { cursor: pointer; }
+.node-emoji { font-size: 34px; }
+.node-label { font-size: 17px; font-weight: 700; fill: var(--ink); }
+.node-value { font-size: 15px; font-weight: 700; fill: #fff; }
+.node-hl circle { filter: drop-shadow(0 0 10px rgba(232, 163, 61, 0.9)); }
+.node-dim { opacity: 0.25; }
+
+/* ズームボタン */
+#zoom-controls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#zoom-controls button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 251, 240, 0.92);
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- 下部パネル ---------- */
+#panel {
+  flex: 0 0 auto;
+  max-height: 46%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--paper);
+  border-radius: 18px 18px 0 0;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom, 0));
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+}
+#panel-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line);
+  margin: 4px auto 8px;
+}
+#panel-title {
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+#panel-body { font-size: 0.92rem; line-height: 1.7; }
+#panel-body p { margin: 0 0 8px; }
+
+/* ---------- 汎用パーツ ---------- */
+.small-note { color: var(--ink-soft); font-size: 0.82rem; }
+.chain-text { font-weight: 700; color: var(--green-deep); }
+.tag { padding: 1px 8px; border-radius: 999px; font-size: 0.8rem; color: #fff; }
+.tag-green { background: var(--green); }
+.tag-red { background: var(--rust); }
+
+.big-button {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  margin: 10px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.big-button:active { transform: scale(0.97); }
+.big-button.primary { background: var(--green); color: #fff; box-shadow: 0 3px 0 var(--green-deep); }
+.big-button.ghost { background: transparent; border: 2px solid var(--line); color: var(--ink-soft); }
+.big-button.ghost.danger { border-color: var(--rust); color: var(--rust); }
+
+.small-button {
+  padding: 10px 16px;
+  margin: 6px 6px 0 0;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.button-row .big-button { flex: 1; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.chip {
+  border: 2px solid var(--rust);
+  background: var(--card);
+  color: var(--rust);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mini-list { margin: 0 0 8px; padding-left: 18px; font-size: 0.85rem; color: var(--ink-soft); }
+.mini-list li { margin-bottom: 3px; }
+
+/* ノード詳細 */
+.node-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.node-head-emoji { font-size: 2rem; }
+
+/* 行動ボタン */
+.action-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.action-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 2px solid var(--green);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.action-button:disabled { opacity: 0.4; border-color: var(--line); cursor: not-allowed; }
+.action-cost { font-size: 0.8rem; color: var(--ink-soft); font-weight: 400; }
+
+/* 住民の声 */
+.voice-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+}
+.voice-top { display: flex; align-items: center; gap: 8px; }
+.voice-name { font-weight: 700; flex: 1; }
+.stance-badge { font-size: 0.78rem; font-weight: 700; }
+.voice-reason { color: var(--ink-soft); font-size: 0.9rem; margin: 4px 0 0 !important; }
+.voice-card.stance-agree { border-left: 5px solid var(--green); }
+.voice-card.stance-concern { border-left: 5px solid var(--rust); }
+.voice-card.stance-neutral { border-left: 5px solid var(--amber); }
+
+/* ニュース */
+.news-item {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+}
+.news-event { border-left: 5px solid var(--amber); }
